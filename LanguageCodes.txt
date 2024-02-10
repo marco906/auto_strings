@@ -1,0 +1,10 @@
+#Name		Google	DeepL	XCode (.lproj directory name)
+French		fr		fr		fr
+German		de		de		de
+English		en		en-US	en
+Spanish		es		es		es
+Japanese	ja		ja		ja
+Italian		it		it		it
+Norwegian	no		nb		nb
+Portuguese	pt		pt-PT	pt-PT
+Italian		it		it		it
