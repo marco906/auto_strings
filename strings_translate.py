@@ -15,8 +15,10 @@ parser.add_argument("-t", default="google", help="set translation service. Possi
 parser.add_argument("-a", default="", help="set api key to use for DeepL")
 parser.add_argument("-f", default="Localizable.strings", help="set the path to the Localizable.strings to read keys from")
 parser.add_argument("-o", default="en", help="set the origin locale for auto translation, default is english")
+parser.add_argument("-d", default="output", help="set the destination path for the exported translations")
 parser.add_argument("-v", default="0", help="Verbose")
 args = parser.parse_args()
+outputDir = str(args.d).strip()
 
 def translateSourceText(key, sourceText, translateTargetCode):
 	translatedText = sourceText
@@ -77,7 +79,7 @@ def translateLineInFile(translationTuple, translateTargetCode, outputTargetCode)
 	(translation, success, warning) = translateSourceText(stringName, sourceText, translateTargetCode)
 
 	if success:
-		writeTranslationToFile(stringsFileName, stringName, translation, stringComment, outputTargetCode)
+		writeTranslationToFile(outputDir, stringsFileName, stringName, translation, stringComment, outputTargetCode)
 			
 	return (success, warning)
 

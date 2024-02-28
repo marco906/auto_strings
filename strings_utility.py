@@ -69,17 +69,17 @@ def _createDirIfNeeded(fileName):
 
 def writeCommentToFile(stringsFileName, comment, outputTargetCode):
 	outputFileName = os.path.join(outputDir, outputTargetCode + os.path.join(".lproj", stringsFileName))
+	_createDirIfNeeded(outputFileName)
 
 	with open(outputFileName, "a", encoding="utf-8") as myfile:
-		_createDirIfNeeded(outputFileName)
 		contentToWrite = "/* " + comment.strip() + " */\n\n"
 		myfile.write(contentToWrite)
 
-def writeTranslationToFile(stringsFileName, sourceText, translatedText, comment, outputTargetCode):
+def writeTranslationToFile(outputDir, stringsFileName, sourceText, translatedText, comment, outputTargetCode):
 	outputFileName = os.path.join(outputDir, outputTargetCode + os.path.join(".lproj", stringsFileName))
+	_createDirIfNeeded(outputFileName)
 
 	with open(outputFileName, "a", encoding="utf-8") as myfile:
-		_createDirIfNeeded(outputFileName)
 		contentToWrite = ""
 		if len(comment) != 0:
 			contentToWrite = "/* " + comment.strip() + " */\n"
@@ -88,9 +88,9 @@ def writeTranslationToFile(stringsFileName, sourceText, translatedText, comment,
 
 def exportTranslationToFile(destinationPath, stringsFileName, sourceText, translatedText, comment, outputTargetCode):
 	outputFileName = os.path.join(destinationPath, outputTargetCode + os.path.join(".lproj", stringsFileName))
+	_createDirIfNeeded(outputFileName)
 
 	with open(outputFileName, "a", encoding="utf-8") as myfile:
-		_createDirIfNeeded(outputFileName)
 		contentToWrite = ""
 		if len(comment) != 0:
 			contentToWrite = "/* " + comment.strip() + " */\n"

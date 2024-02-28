@@ -12,7 +12,7 @@ parser.add_argument("-f", default="Localizable.strings", help="file name of the 
 args = parser.parse_args()
 
 filePath = os.path.dirname(__file__)
-sourceResourcePath = os.path.join(filePath, args.s.strip())
+sourceResourcePath = os.path.join(args.s.strip())
 destinationResourcePath = os.path.expanduser(args.d.strip())
 stringsFileName = args.f.strip()
 
@@ -46,7 +46,6 @@ for dirpath, dirnames, filenames in os.walk(sourceResourcePath):
 				print("Reading source path: %s" % (localizablePath))
 				sourceLines = readTranslations(localizablePath)
 				numSource = len(sourceLines)
-				print("Found %a translations in source path: %s" % (numSource,localizablePath))
 				if numSource == 0:
 					continue
 				
@@ -59,6 +58,8 @@ for dirpath, dirnames, filenames in os.walk(sourceResourcePath):
 				print("Reading destination path: %s" % (destinationLocalizablePath))
 				destinationLines = readTranslations(destinationLocalizablePath)
 				print("Found %a translations in destination path: %s" % (len(destinationLines),destinationLocalizablePath))
+				print("Adding %a translations in from source path: %s" % (numSource,localizablePath))
+				print("\n")
 
 				destinationLines += sourceLines
 
