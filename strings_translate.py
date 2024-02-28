@@ -18,7 +18,7 @@ parser.add_argument("-o", default="en", help="set the origin locale for auto tra
 parser.add_argument("-v", default="0", help="Verbose")
 args = parser.parse_args()
 
-def translateSourceText(sourceText, translateTargetCode):
+def translateSourceText(key, sourceText, translateTargetCode):
 	translatedText = sourceText
 
 	try:
@@ -30,7 +30,7 @@ def translateSourceText(sourceText, translateTargetCode):
 			translatedText = result.text
 
 			if args.v == "1":
-				print("  %s => %s" % (sourceText, translatedText))
+				print("  %s => %s" % (key, translatedText))
 		else:
 			googleTranslator = Translator()
 			obj = googleTranslator.translate(sourceText, src=args.o, dest=translateTargetCode)
@@ -38,9 +38,9 @@ def translateSourceText(sourceText, translateTargetCode):
 			translatedText = obj.text
 
 			if args.v == "1":
-				print("  %s => %s" % (sourceText, translatedText))
+				print("  %s => %s" % (key, translatedText))
 	except Exception as e:
-		print("\n  ..... !! FAILED !! to translate for %s: %s = %s\n" % (translateTargetCode, sourceText, e))
+		print("\n  ..... !! FAILED !! to translate for %s: %s = %s\n" % (translateTargetCode, key, e))
 
 		return (sourceText, False, False)
 
@@ -74,7 +74,7 @@ def translateLineInFile(translationTuple, translateTargetCode, outputTargetCode)
 	if not stringComment:
 		stringComment = ""
 	
-	(translation, success, warning) = translateSourceText(sourceText, translateTargetCode)
+	(translation, success, warning) = translateSourceText(stringName, sourceText, translateTargetCode)
 
 	if success:
 		writeTranslationToFile(stringsFileName, stringName, translation, stringComment, outputTargetCode)
