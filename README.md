@@ -7,7 +7,7 @@ Auto translate `.strings` localization files into multiple languages for use in 
 3. `pip3 install --upgrade deepl` for DeepL
 4. `python3 strings_translate.py`
 ```
-usage: strings_translate.py [-h] [-t T] [-a A] [-f F] [-o O] [-v V]
+usage: strings_translate.py [-h] [-t T] [-a A] [-f F] [-o O] [-d D] [-v V] 
 
 optional arguments:
   -h, --help  show this help message
@@ -15,6 +15,7 @@ optional arguments:
   -a A        set DeepL api token
   -f F        set the path to the origin .strings file to read keys and base translations from, default is Localizable.strings
   -o O        set the language that is used in the origin .strings file, default is english
+  -d D		  set the destination path for the exported translations, defaults to output
   -v V        Verbose
 ```
 
