@@ -86,7 +86,7 @@ def translateLineInFile(translationTuple, translateTargetCode, outputTargetCode)
 def translateFile(stringsFileName, languageName, translateTargetCode, outputTargetCode):
 	print(languageName)
 
-	clearContentsOfFile(stringsFileName, outputTargetCode)
+	clearContentsOfFile(outputDir, stringsFileName, outputTargetCode)
 
 	totalLinesTranslated = 0
 	totalLinesNeeded = 0

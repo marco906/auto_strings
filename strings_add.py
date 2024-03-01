@@ -3,7 +3,7 @@ import argparse
 import os.path
 import re
 
-from strings_utility import readTranslations, clearContentsOfExportFile, exportTranslationToFile
+from strings_utility import readTranslations, clearContentsOfExportFile, exportTranslationToFile, mergeTranslations
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", default="output", help="path to source localization files")
@@ -58,21 +58,21 @@ for dirpath, dirnames, filenames in os.walk(sourceResourcePath):
 				print("Reading destination path: %s" % (destinationLocalizablePath))
 				destinationLines = readTranslations(destinationLocalizablePath)
 				print("Found %a translations in destination path: %s" % (len(destinationLines),destinationLocalizablePath))
-				print("Adding %a translations in from source path: %s" % (numSource,localizablePath))
+				print("Adding/Updating %a translations in from source path: %s" % (numSource,localizablePath))
 				print("\n")
 
-				destinationLines += sourceLines
+				mergeTranslations(destinationLines, sourceLines)
 
 				clearContentsOfExportFile(destinationResourcePath, stringsFileName, dirLang)
 
 				for line in sorted(destinationLines, key = lambda i: str(i['key']).lower()):
-					stringName = line['key']
-					stringVal = line['value']
-					stringComment = line['comment']
+					key = line['key']
+					translation = line['value']
+					comment = line['comment']
 
-					if not stringComment:
-						stringComment = ""
+					if not comment:
+						comment = ""
 
-					stringVal = re.sub("\.([A-Z])", "\. \\1", stringVal)
+					translation = re.sub("\.([A-Z])", "\. \\1", translation)
 
-					exportTranslationToFile(destinationResourcePath, stringsFileName, stringName, stringVal, stringComment, dirLang)
+					exportTranslationToFile(destinationResourcePath, stringsFileName, key, translation, comment, dirLang)

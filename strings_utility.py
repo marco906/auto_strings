@@ -7,7 +7,6 @@ import re
 
 format_encoding = 'UTF-16'
 filePath = os.path.dirname(__file__)
-outputDir = os.path.join(filePath, "output")
 
 def readTranslations(fileName):
 	if not os.path.exists(fileName):
@@ -67,7 +66,7 @@ def _createDirIfNeeded(fileName):
 	if not os.path.exists(os.path.dirname(fileName)):
 		os.makedirs(os.path.dirname(fileName))
 
-def writeCommentToFile(stringsFileName, comment, outputTargetCode):
+def writeCommentToFile(outputDir, stringsFileName, comment, outputTargetCode):
 	outputFileName = os.path.join(outputDir, outputTargetCode + os.path.join(".lproj", stringsFileName))
 	_createDirIfNeeded(outputFileName)
 
@@ -75,7 +74,7 @@ def writeCommentToFile(stringsFileName, comment, outputTargetCode):
 		contentToWrite = "/* " + comment.strip() + " */\n\n"
 		myfile.write(contentToWrite)
 
-def writeTranslationToFile(outputDir, stringsFileName, sourceText, translatedText, comment, outputTargetCode):
+def writeTranslationToFile(outputDir, stringsFileName, key, translation, comment, outputTargetCode):
 	outputFileName = os.path.join(outputDir, outputTargetCode + os.path.join(".lproj", stringsFileName))
 	_createDirIfNeeded(outputFileName)
 
@@ -83,10 +82,10 @@ def writeTranslationToFile(outputDir, stringsFileName, sourceText, translatedTex
 		contentToWrite = ""
 		if len(comment) != 0:
 			contentToWrite = "/* " + comment.strip() + " */\n"
-		contentToWrite += "\"" + sourceText + "\" = \"" + translatedText + "\";\n\n"
+		contentToWrite += "\"" + key + "\" = \"" + translation + "\";\n\n"
 		myfile.write(contentToWrite)
 
-def exportTranslationToFile(destinationPath, stringsFileName, sourceText, translatedText, comment, outputTargetCode):
+def exportTranslationToFile(destinationPath, stringsFileName, key, translation, comment, outputTargetCode):
 	outputFileName = os.path.join(destinationPath, outputTargetCode + os.path.join(".lproj", stringsFileName))
 	_createDirIfNeeded(outputFileName)
 
@@ -94,15 +93,28 @@ def exportTranslationToFile(destinationPath, stringsFileName, sourceText, transl
 		contentToWrite = ""
 		if len(comment) != 0:
 			contentToWrite = "/* " + comment.strip() + " */\n"
-		contentToWrite += "\"" + sourceText + "\" = \"" + translatedText + "\";\n\n"
+		contentToWrite += "\"" + key + "\" = \"" + translation + "\";\n\n"
 		myfile.write(contentToWrite)
+
+def mergeTranslations(existingLines, addedLines):
+	linesToAdd = []
+	for addedLine in addedLines:
+		isNew = True
+		for i, existingLine in enumerate(existingLines):
+			if addedLine["key"] == existingLine["key"]:
+				existingLines[i] = addedLine
+				isNew = False
+				break
+		if isNew:
+			linesToAdd.append(addedLine)
+	existingLines += linesToAdd
 
 def clearContentsOfExportFile(destinationPath, stringsFileName, target):
 	fileName = os.path.join(destinationPath, target + os.path.join(".lproj", stringsFileName))
 	_createDirIfNeeded(fileName)
 	open(fileName, 'w').close()
 
-def clearContentsOfFile(stringsFileName, target):
+def clearContentsOfFile(outputDir, stringsFileName, target):
 	fileName = os.path.join(outputDir, target + os.path.join(".lproj", stringsFileName))
 	_createDirIfNeeded(fileName)
 	open(fileName, 'w').close()
