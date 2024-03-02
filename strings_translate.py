@@ -105,7 +105,7 @@ def translateFile(stringsFileName, languageName, translateTargetCode, outputTarg
 	if totalLinesNeeded != totalLinesTranslated:
 		print("ERROR: NOT ALL LINES TRANSLATED. Total lines translated for %s: %s. Original source count: %s" % (languageName, totalLinesTranslated, totalLinesNeeded))
 	else:
-		print("✅ Lines translated for %s: %s" % (languageName, totalLinesTranslated))
+		print("✅ %s lines translated for %s: %s" % (totalLinesTranslated, languageName))
 
 if str(args.t).strip().lower() == "deepl":
 	print("Using DeepL translator")

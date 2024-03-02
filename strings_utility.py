@@ -85,17 +85,6 @@ def writeTranslationToFile(outputDir, stringsFileName, key, translation, comment
 		contentToWrite += "\"" + key + "\" = \"" + translation + "\";\n\n"
 		myfile.write(contentToWrite)
 
-def exportTranslationToFile(destinationPath, stringsFileName, key, translation, comment, outputTargetCode):
-	outputFileName = os.path.join(destinationPath, outputTargetCode + os.path.join(".lproj", stringsFileName))
-	_createDirIfNeeded(outputFileName)
-
-	with open(outputFileName, "a", encoding="utf-8") as myfile:
-		contentToWrite = ""
-		if len(comment) != 0:
-			contentToWrite = "/* " + comment.strip() + " */\n"
-		contentToWrite += "\"" + key + "\" = \"" + translation + "\";\n\n"
-		myfile.write(contentToWrite)
-
 def mergeTranslations(existingLines, addedLines):
 	linesToAdd = []
 	for addedLine in addedLines:

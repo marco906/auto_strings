@@ -3,7 +3,7 @@ import argparse
 import os.path
 import re
 
-from strings_utility import readTranslations, clearContentsOfExportFile, exportTranslationToFile, mergeTranslations
+from strings_utility import readTranslations, clearContentsOfExportFile, writeTranslationToFile, mergeTranslations
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", default="output", help="path to source localization files")
@@ -43,7 +43,7 @@ for dirpath, dirnames, filenames in os.walk(sourceResourcePath):
 					print("Error source path not found: %s" % (localizablePath))
 					continue
 
-				print("Reading source path: %s" % (localizablePath))
+				#print("Reading source path: %s" % (localizablePath))
 				sourceLines = readTranslations(localizablePath)
 				numSource = len(sourceLines)
 				if numSource == 0:
@@ -55,11 +55,9 @@ for dirpath, dirnames, filenames in os.walk(sourceResourcePath):
 					print("Error destination path not found: %s" % (destinationLocalizablePath))
 					continue
 
-				print("Reading destination path: %s" % (destinationLocalizablePath))
+				#print("Reading destination path: %s" % (destinationLocalizablePath))
 				destinationLines = readTranslations(destinationLocalizablePath)
-				print("Found %a translations in destination path: %s" % (len(destinationLines),destinationLocalizablePath))
-				print("Adding/Updating %a translations in from source path: %s" % (numSource,localizablePath))
-				print("\n")
+				#print("Found %a translations in destination path: %s" % (len(destinationLines),destinationLocalizablePath))
 
 				mergeTranslations(destinationLines, sourceLines)
 
@@ -73,6 +71,9 @@ for dirpath, dirnames, filenames in os.walk(sourceResourcePath):
 					if not comment:
 						comment = ""
 
-					translation = re.sub("\.([A-Z])", "\. \\1", translation)
+					translation = re.sub(r"\.([A-Z])", r". \1", translation)
 
-					exportTranslationToFile(destinationResourcePath, stringsFileName, key, translation, comment, dirLang)
+					writeTranslationToFile(destinationResourcePath, stringsFileName, key, translation, comment, dirLang)
+
+				print("✅ Merged %a translations into %s existing tranlations for %s" % (numSource, len(destinationLines), dirLang))
+				
