@@ -16,9 +16,11 @@ parser.add_argument("-a", default="", help="set api key to use for DeepL")
 parser.add_argument("-f", default="Localizable.strings", help="set the path to the Localizable.strings to read keys from")
 parser.add_argument("-o", default="en", help="set the origin locale for auto translation, default is english")
 parser.add_argument("-d", default="output", help="set the destination path for the exported translations")
+parser.add_argument("-n", default="Localizable.strings", help="set the name of the generated output files")
 parser.add_argument("-v", default="0", help="Verbose")
 args = parser.parse_args()
 outputDir = str(args.d).strip()
+outputFilename = str(args.n).strip()
 
 def translateSourceText(key, sourceText, translateTargetCode):
 	translatedText = sourceText
@@ -79,7 +81,7 @@ def translateLineInFile(translationTuple, translateTargetCode, outputTargetCode)
 	(translation, success, warning) = translateSourceText(stringName, sourceText, translateTargetCode)
 
 	if success:
-		writeTranslationToFile(outputDir, stringsFileName, stringName, translation, stringComment, outputTargetCode)
+		writeTranslationToFile(outputDir, outputFilename, stringName, translation, stringComment, outputTargetCode)
 			
 	return (success, warning)
 
@@ -105,13 +107,13 @@ def translateFile(stringsFileName, languageName, translateTargetCode, outputTarg
 	if totalLinesNeeded != totalLinesTranslated:
 		print("ERROR: NOT ALL LINES TRANSLATED. Total lines translated for %s: %s. Original source count: %s" % (languageName, totalLinesTranslated, totalLinesNeeded))
 	else:
-		print("✅ %s lines translated for %s: %s" % (totalLinesTranslated, languageName))
+		print("✅ %s lines translated for %s" % (totalLinesTranslated, languageName))
 
 if str(args.t).strip().lower() == "deepl":
 	print("Using DeepL translator")
 
 originPath = args.f.strip()
-dirName, stringsFileName = os.path.split(originPath)
+dirName = os.path.dirname(originPath)
 print("Reading source language: %s" % (originPath))
 
 originLines = readTranslations(originPath)
@@ -132,7 +134,7 @@ with open(p, 'r') as supportedLangCodeFile:
 
 		languageCode = langageCodeDeepl if str(args.t).strip().lower() == "deepl" else languageCodeGoogle
 		
-		translateFile(stringsFileName, languageName, languageCode, outputTargetCode)
+		translateFile(outputFilename, languageName, languageCode, outputTargetCode)
 
 		print("\n")
 
