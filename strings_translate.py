@@ -44,8 +44,7 @@ def translateSourceText(key, sourceText, translateTargetCode):
 			if args.v == "1":
 				print("  %s => %s" % (key, translatedText))
 	except Exception as e:
-		print("\n  ..... !! FAILED !! to translate for %s: %s = %s\n" % (translateTargetCode, key, e))
-
+		print("\n ⚠️ ERROR: Failed to translate for %s: %s = %s\n" % (translateTargetCode, key, e))
 		return (sourceText, False, False)
 
 	translatedText = cleanUpTranslation(translatedText)
@@ -56,16 +55,16 @@ def translateSourceText(key, sourceText, translateTargetCode):
 	formatterFailed = False
 	if totalFormattersInSource != totalFormattersInOutput:
 		formatterFailed = True
-		print("\n  ..... !! WARNING !! Formatters don't match in: %s => %s (lang: %s)\n" % (sourceText, translatedText, translateTargetCode))
+		print("\n WARNING: Formatters don't match in: %s => %s (lang: %s)\n" % (sourceText, translatedText, translateTargetCode))
 	elif translatedText.count('% ') != sourceText.count('% '):
 		formatterFailed = True
-		print("\n  ..... !! WARNING !! Formatters have an invalid space: %s => %s (lang: %s)\n" % (
+		print("\n WARNING: Formatters have an invalid space: %s => %s (lang: %s)\n" % (
 		sourceText, translatedText, translateTargetCode))
 	
 	if translatedText.find('%') != -1 and translatedText[translatedText.find('%') + 1] not in ['u', 'l', '@', 'f', '1', '2', '3', 'd', '.']:
 		formatterFailed = True
 
-		print("\n  ..... !! WARNING !! Invalid formatter: %s => %s (lang: %s)\n" % (
+		print("\n WARNING: Invalid formatter: %s => %s (lang: %s)\n" % (
 		sourceText, translatedText, translateTargetCode))
 
 	return (translatedText, True, formatterFailed)
@@ -102,10 +101,10 @@ def translateFile(stringsFileName, languageName, translateTargetCode, outputTarg
 			totalWarnings += 1
 
 	if totalWarnings != 0:
-		print("ERROR: CHECK WARNINGS. Total reported %s" % (totalWarnings))
+		print("⚠️ ERROR: CHECK WARNINGS. Total reported %s" % (totalWarnings))
 	
 	if totalLinesNeeded != totalLinesTranslated:
-		print("ERROR: NOT ALL LINES TRANSLATED. Total lines translated for %s: %s. Original source count: %s" % (languageName, totalLinesTranslated, totalLinesNeeded))
+		print("⚠️ ERROR: NOT ALL LINES TRANSLATED. Total lines translated for %s: %s. Original source count: %s" % (languageName, totalLinesTranslated, totalLinesNeeded))
 	else:
 		print("✅ %s lines translated for %s" % (totalLinesTranslated, languageName))
 
